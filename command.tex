@@ -1,0 +1,364 @@
+%\newcounter{example}[section]
+%\renewcommand{\theexample}{\nthesection.\arabic{example}}
+%\newenvironment{example}{
+%     \refstepcounter{example}
+%     {\vspace{1ex} \noindent\bf  Example  \theexample:}}{
+%     \eop\vspace{1ex}} %\hspace*{\fill}\vspace*{1ex}}
+
+%\newcounter{definition}[section]
+%\renewcommand{\thedefinition}{\nthesection.\arabic{definition}}
+%\newenvironment{definition}{
+%     \refstepcounter{definition}
+%     {\vspace{1ex} \noindent\bf  Definition  \thedefinition:}}{
+%     \eop\vspace{1ex}} %\hspace*{\fill}\vspace*{1ex}}
+
+%\newcounter{theorem}[section]
+%\renewcommand{\thetheorem}{\nthesection.\arabic{theorem}}
+%\newenvironment{theorem}{\begin{em}
+%         \refstepcounter{theorem}
+%         {\vspace{1ex} \noindent\bf  Theorem  \thetheorem:}}{
+%         \end{em}\eop\vspace{1ex}} %\hspace*{\fill}\vspace*{1ex}}
+%
+% \newcounter{lemma}[section]
+% \renewcommand{\thelemma}{\nthesection.\arabic{lemma}}
+% \newenvironment{lemma}{\begin{em}
+%         \refstepcounter{lemma}
+%         {\vspace{1ex}\noindent\bf Lemma \thelemma:}}{
+%         \end{em}\eop\vspace{1ex}} %\hspace*{\fill}\vspace*{1ex}}
+%
+% \newcounter{remark}[section]
+% \renewcommand{\theremark}{\nthesection.\arabic{remark}}
+% \newenvironment{remark}{\begin{em}
+%         \refstepcounter{remark}
+%         {\vspace{1ex}\noindent\bf Remark \theremark:}}{
+%         \end{em}\eop\vspace{1ex}} %\hspace*{\fill}\vspace*{1ex}}
+%
+% \newcounter{corollary}[section]
+% \renewcommand{\thecorollary}{\nthesection.\arabic{corollary}}
+% \newenvironment{corollary}{\begin{em}
+%         \refstepcounter{corollary}
+%         {\vspace{1ex}\noindent\bf Corollary \thecorollary:}}{
+%         \end{em}\eop\vspace{1ex}} %\hspace*{\fill}\vspace*{1ex}}
+
+
+\newcommand{\proofsketch}{\noindent{\bf Proof Sketch: }}
+\newcommand{\myproof}{\noindent{\bf Proof: }}
+% \newcommand{\proof}{\noindent{\em Proof: }}
+
+\newcommand{\nthesection}{\arabic{section}}
+% \newcommand{\thetheorem}{\thesection.\arabic{theorem}}
+
+
+% End of proof
+\newcommand{\eop}{\hspace*{\fill}\mbox{$\Box$}}
+% \renewcommand{\eop}{\hspace*{\fill}\mbox{$\Box$}\vspace*{1ex}}
+
+% Small Title
+\newcommand{\stitle}[1]{\vspace{1ex} \noindent{{\bf #1}}}
+
+\newcommand{\sstitle}[1]{\vspace{1ex} \noindent{\textit{ #1}}}
+\newcommand{\ssstitle}[1]{\vspace{1ex} \noindent{\textbf{ #1}}}
+
+\newcommand{\kw}[1]{{\ensuremath {\mathsf{#1}}}\xspace}
+\newcommand{\bkw}[1]{{\ensuremath {\mathsf{\textbf{#1}}}}\xspace}
+
+\newcommand{\kwnospace}[1]{{\ensuremath {\mathsf{#1}}}}
+\newcommand{\ltt}{\kw{LTT}}
+\newcommand{\arr}{\kw{arrive}}
+\newcommand{\vp}{\kw{p}}
+
+\newcommand{\bellf}{{\sc Bellman-Ford}\xspace}
+\newcommand{\bfalgo}{{\sc OR}\xspace}
+
+\newcommand{\aalgo}{{\sc KDXZ}\xspace}
+
+\newcommand{\dijk}{{\sc Dijkstra}\xspace}
+%\newcommand{\dalgo}{{\sc DLY}\xspace}
+\newcommand{\dalgo}{{\sc Two-Step-LTT}\xspace}
+
+\newcommand{\dtalgo}{{\sc DOT}\xspace}
+
+
+\newcommand{\genfunc}{{\sl timeRefinement}\xspace}
+\newcommand{\pathc}{{\sl pathSelection}\xspace}
+\newcommand{\fifo}{{\sl FIFO}\xspace}
+
+\newcommand{\st}{starting time\xspace}
+\newcommand{\sti}{starting-time interval\xspace}
+\newcommand{\stsi}{starting-time subinterval\xspace}
+\newcommand{\stsis}{starting-time subintervals\xspace}
+\newcommand{\stis}{starting-time intervals\xspace}
+\newcommand{\ti}{time interval\xspace}
+\newcommand{\tis}{time intervals\xspace}
+\newcommand{\ttime}{travel time\xspace}
+\newcommand{\ttimea}{travel time\xspace}
+\newcommand{\at}{arrival time\xspace}
+\newcommand{\ata}{arrival-time\xspace}
+\newcommand{\atf}{arrival-time function\xspace}
+\newcommand{\ati}{arrival-time interval\xspace}
+\newcommand{\ats}{arrival times\xspace}
+\newcommand{\ed}{edge delay\xspace}
+\newcommand{\eda}{edge-delay\xspace}
+\newcommand{\edf}{edge-delay function\xspace}
+\newcommand{\eds}{edge delays\xspace}
+\newcommand{\wt}{waiting time\xspace}
+
+\newcommand{\g}{\overline{g}}
+\newcommand{\iend}{\tau}
+
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Defined in XML Paper %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\myhead}[1]{\vspace{.05in} \noindent {\bf #1.}~~}
+\newcommand{\cond}[1]{(\emph{#1})~}
+\newcommand{\op}[1]{(\emph{#1})~}
+
+\newcommand{\qc}{\ensuremath{Q^c}}
+
+
+\newcommand{\rewrite}{\kw{XPathToReg}}
+
+\newcommand{\upparen}[1]{\ensuremath{\mathrm{(}}{#1}\ensuremath{\mathrm{)}}}
+\newcommand{\func}[2]{\funcname{#1}\upparen{\ensuremath{#2}}}
+\newcommand{\funcname}[1]{\ensuremath{\mathit{#1}}}
+
+\newcommand\AS{\textbf{as}\ }
+\newcommand{\xsltsize}{\small}
+
+\newcommand{\X}{{\cal X}}
+%\newcommand{\U}{{\cal U}}
+\newcommand{\sem}[1]{[\![#1]\!]}
+\newcommand{\NN}[2]{#1\sem{#2}}
+\newcommand{\pcdata}{{\tt str}\xspace}
+
+\newcommand{\exa}[2]{{\tt\begin{tabbing}\hspace{#1}\=\hspace{#1}\=\+\kill #2\end{tabbing}}}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\la}{\leftarrow}
+\newcommand{\rsa}{\_} % {\rightsquigarrow}
+\newcommand{\Ed}[2]{E_{{\scriptsize \mbox{#1} \rsa \mbox{#2}}}}
+\newenvironment{bi}{\begin{itemize}
+        \setlength{\topsep}{0.5ex}\setlength{\itemsep}{0ex}\vspace{-0.6ex}}
+        {\end{itemize}\vspace{-1ex}}
+\newenvironment{be}{\begin{enumerate}
+        \setlength{\topsep}{0.5ex}\setlength{\itemsep}{0ex}\vspace{-0.6ex}}
+        {\end{itemize}\vspace{-1ex}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\ee}{\end{enumerate}}
+
+\newcommand{\mat}[2]{{\begin{tabbing}\hspace{#1}\=\+\kill #2\end{tabbing}}}
+\newcommand{\m}{\hspace{0.05in}}
+\newcommand{\ls}{\hspace{0.1in}}
+\newcommand{\beqn}{\begin{eqnarray*}}
+\newcommand{\eeqn}{\end{eqnarray*}}
+
+\newcounter{ccc}
+\newcommand{\bcc}{\setcounter{ccc}{1}\theccc.}
+\newcommand{\icc}{\addtocounter{ccc}{1}\theccc.}
+
+\newcommand{\oneurl}[1]{\texttt{#1}}
+\newcommand{\tabstrut}{\rule{0pt}{4pt}\vspace{-0.1in}}
+\newcommand{\tabstruct}{\rule{0pt}{8pt}\\[-2ex]}
+\newcommand{\stab}{\rule{0pt}{8pt}\\[-2.2ex]}
+\newcommand{\sstab}{\rule{0pt}{8pt}\\[-2.2ex]}
+
+\newcommand{\eat}[1]{}
+
+% \newfloat{tcm}{thp}{loa}
+% \floatname{tcm}{Recursive \sql}
+
+\def\subfigcapskip{2pt}
+% \def\subfigtopskip{0pt}
+% \def\subfigbottomskip{0pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Defined in XML Paper (END) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\rdms}{{\sc rdbms}\xspace}
+\newcommand{\sql}{{\sc sql}\xspace}
+\newcommand{\dbms}{{\sc dbms}\xspace}
+
+%\newcommand{\cfig}{Figure~}
+%\newcommand{\ctab}{Table~}
+\newcommand{\cfig}{Fig.~}
+\newcommand{\ctab}{Table~}
+\newcommand{\csec}{Section~}
+\newcommand{\cdef}{Definition~}
+\newcommand{\cthm}{Theorem~}
+\newcommand{\clem}{Lemma~}
+\newcommand{\cequ}[1]{Equation~(#1)}
+\newcommand{\SG}{\mathbf{SG}}
+\newcommand{\SA}{\mathbf{SA}}
+\renewcommand{\AA}{\mathbf{AA}}
+
+%\newcommand{\EDA}{\textbf{EDA}}
+%\newcommand{\CSP}{\textbf{CSP}}
+%\newcommand{\TDSP}{\textbf{TDSP}}
+%\newcommand{\SSSP}{\textbf{SSSP}}
+
+%\newcommand{\revised}{***\texttt}
+%\newcommand{\revised}{\comment}
+%\newcommand{\add}{***{\texttt{ADD}}}
+%\newcommand{\add}{}
+%\newcommand{\add}{\comment}
+
+
+\newcommand{\xml}{{\sl XML}\xspace}
+\newcommand{\xlink}{{\sl XLink}\xspace}
+\newcommand{\xpath}{{\sl XPath}\xspace}
+\newcommand{\xpointer}{{\sl XPointer}\xspace}
+\newcommand{\rdf}{{\sl RDF}\xspace}
+\newcommand{\tc}{{\sl TC}\xspace}
+%\newcommand{\bfs}{{\sl BFS}\xspace}
+\newcommand{\dfs}{{\sl DFS}\xspace}
+\newcommand{\DAG}{{\sl DAG}\xspace}
+\newcommand{\DAGs}{{\sl DAG}s\xspace}
+\newcommand{\grail}{{\sl GRAIL}\xspace}
+\newcommand{\yesgrail}{{\sl Yes-GRAIL}\xspace}
+\newcommand{\sit}{\kw{sit}}
+\newcommand{\psit}{{\cal P}_{sit}}
+\newcommand{\yescode}{{\sl Yes-Label}\xspace}
+\newcommand{\nocode}{{\sl No-Label}\xspace}
+\newcommand{\entry}{\kw{entry}\xspace}
+\newcommand{\yngindex}{{\sl YNG-Index}\xspace}
+\newcommand{\rqrun}{{\sl RQ-Run}\xspace}
+\newcommand{\citeseerx}{{\sl citeseerx}\xspace}
+\newcommand{\gouniprot}{{\sl go-uniprot}\xspace}
+\newcommand{\uniprot}{{\sl uniprot150}\xspace}
+
+
+\long\def\comment#1{}
+
+
+\newcommand{\scc}{strongly connected component\xspace}
+\newcommand{\sccs}{strongly connected components\xspace}
+\newcommand{\sscc}{\kw{SCC}}
+\newcommand{\ssccs}{\kwnospace{SCC}s\xspace}
+\newcommand{\sccg}{\kwnospace{SCC}\textrm{-}\kw{Graph}}
+\newcommand{\strongc}{\leftrightarrow}
+\newcommand{\nstrongc}{\nleftrightarrow}
+\newcommand{\emscc}{\kwnospace{EM}\textrm{-}\kw{SCC}}
+\newcommand{\dfsscc}{\kwnospace{DFS}\textrm{-}\kw{SCC}}
+\newcommand{\dfstree}{\kwnospace{DFS}\textrm{-}\kw{Tree}}
+%\newcommand{\len}{\kw{length}}
+\newcommand{\len}{\kw{len}}
+\newcommand{\dep}{\kw{depth}}
+% \newcommand{\tdep}{\kw{mdepth}}
+% \newcommand{\tlink}{\kw{mnode}}
+\newcommand{\tdep}{\kw{drank}}
+\newcommand{\tlink}{\kw{dlink}}
+\newcommand{\vedges}{up-edges\xspace}
+\newcommand{\vedge}{up-edge\xspace}
+% \newcommand{\dedges}{down-edges\xspace}
+% \newcommand{\dedge}{down-edge\xspace}
+\newcommand{\cvedge}{Up-Edge\xspace}
+
+\newcommand{\drsscc}{\kwnospace{1P}\textrm{-}\kw{SCC}}
+\newcommand{\drssccb}{\kwnospace{1PB}\textrm{-}\kw{SCC}}
+
+
+\newcommand{\Bdrsscc}{\kwnospace{B}\textrm{-}\kwnospace{BR'}\textrm{-}\kw{SCC}}
+
+
+\newcommand{\deprtree}{depth-ranked tree\xspace}
+\newcommand{\cdeprtree}{Depth-Ranked Tree\xspace}
+\newcommand{\drtree}{\kwnospace{BR}\textrm{-}\kw{Tree}}
+\newcommand{\drplustree}{\kwnospace{BR}$^+$\textrm{-}\kw{Tree}}
+\newcommand{\drscc}{\kwnospace{2P}\textrm{-}\kw{SCC}}
+\newcommand{\updatedrank}{\kwnospace{update}\textrm{-}\kw{drank}}
+
+%\newcommand{\drtreeconstruct}{\kwnospace{BR}\textrm{-}\kwnospace{Tree}\textrm{-}\kw{Construction}}
+%\newcommand{\drtreesearch}{\kwnospace{BR}\textrm{-}\kwnospace{Tree}\textrm{-}\kw{Search}}
+\newcommand{\drtreeconstruct}{\kwnospace{Tree}\textrm{-}\kw{Construction}}
+\newcommand{\drtreesearch}{\kwnospace{Tree}\textrm{-}\kw{Search}}
+%\newcommand{\depthrerank}{\kwnospace{depth}\textrm{-}\kw{rerank}}
+\newcommand{\depthrerank}{\kw{pushdown}}
+\newcommand{\itrerank}{\kwnospace{iterative}\textrm{-}\kw{rerank}}
+\newcommand{\drr}{\Downarrow}
+\newcommand{\reach}{\kw{Rset}}
+\newcommand{\earlyrejection}{\kwnospace{early}\textrm{-}\kw{rejection}}
+\newcommand{\earlyacceptance}{\kwnospace{early}\textrm{-}\kw{acceptance}}
+%\newcommand{\greduce}{\kwnospace{graph}\textrm{-}\kw{reduction}}
+\newcommand{\greduce}{\earlyacceptance}
+\newcommand{\drea}{\kwnospace{1P}\textrm{/}\kw{ER}}
+\newcommand{\myinf}{\kw{INF}}
+
+%=============defined in SubgEnum======
+%\newcommand{\ttwig}{\kwnospace{TwinTwig}\xspace}
+%\newcommand{\ttwigs}{\kwnospace{TwinTwig}s\xspace}
+%\newcommand{\ttjoin}{\kwnospace{TwinTwig}\kw{Join}}
+
+\newcommand{\ttwig}{\kwnospace{Twin}\kw{Twig}}
+\newcommand{\ttwigs}{\kwnospace{Twin}\kwnospace{Twig}s\xspace}
+\newcommand{\ttjoin}{\kwnospace{Twin}\kwnospace{Twig}\kw{Join}}
+\newcommand{\mymap}{\kwnospace{map}\xspace}
+\newcommand{\myreduce}{\kwnospace{reduce}\xspace}
+\newcommand{\out}{\kwnospace{out}\xspace}
+\newcommand{\cascadejoin}{\kwnospace{Edge}\kw{Join}}
+\newcommand{\starjoin}{\kwnospace{Star}\kw{Join}}
+\newcommand{\multiwayjoin}{\kwnospace{Multiway}\kw{Join}}
+\newcommand{\cliquejoin}{\kwnospace{Clique}\kw{Join}}
+\newcommand{\gencliqjoin}{\kwnospace{GenCliq}\kw{Join}}
+\newcommand{\optjoin}{\kwnospace{BiG}\kw{Join}}
+\newcommand{\psgl}{\kw{PSgL}}
+\newcommand{\vftwo}{\kw{VF2}}
+\newcommand{\quicksi}{\kwnospace{Quick}\kw{SI}}
+\newcommand{\turboiso}{\kwnospace{Turbo}\kw{ISO}}
+\newcommand{\bigjoin}{\kwnospace{Big}\kw{Join}}
+\newcommand{\crystaljoin}{\kwnospace{Crystal}\kw{Join}}
+\newcommand{\cost}{\kwnospace{cost}\xspace}
+\newcommand{\mysize}{\kwnospace{card}\xspace}
+\newcommand{\er}{\kwnospace{ER}\xspace}
+\newcommand{\power}{\kwnospace{PR}\xspace}
+\newcommand{\eaat}{\kw{Eaat}}
+\newcommand{\vaat}{\kw{Vaat}}
+\newcommand{\multiway}{\kw{Shares}}
+\newcommand{\timely}{\kw{Timely}}
+\newcommand{\onrecv}{\code{OnRecv}}
+\newcommand{\onnotify}{\code{OnNotify}}
+\newcommand{\sendby}{\code{SendBy}}
+\newcommand{\notifyat}{\code{NotifyAt}}
+\newcommand{\joinin}{\code{IN}}
+\newcommand{\mpc}{\kw{MPC}}
+\newcommand{\code}[1]{\texttt{#1}}
+
+
+%=============defined for reference======
+\newcommand{\reffig}[1]{Figure~\ref{fig:#1}}
+\newcommand{\refsec}[1]{Section~\ref{sec:#1}}
+\newcommand{\reftable}[1]{Table~\ref{tab:#1}}
+\newcommand{\refalg}[1]{Algorithm~\ref{alg:#1}}
+\newcommand{\refeq}[1]{Equation~\ref{eq:#1}}
+\newcommand{\refdef}[1]{Definiton~\ref{def:#1}}
+\newcommand{\refthm}[1]{Theorem~\ref{thm:#1}}
+\newcommand{\reflem}[1]{Lemma~\ref{lem:#1}}
+\newcommand{\refrem}[1]{Remark~\ref{rem:#1}}
+\newcommand{\refcoro}[1]{Corollary~\ref{coro:#1}}
+\newcommand{\refex}[1]{Example~\ref{ex:#1}}
+\newcommand{\refppt}[1]{Property~\ref{ppt:#1}}
+
+\makeatletter
+\newcommand{\rmnum}[1]{\romannumeral #1}
+\newcommand{\Rmnum}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+\newcommand{\scan}{\kwnospace{scan}\xspace}
+\newcommand{\udf}{\kwnospace{udf}\xspace}
+\newcommand{\wrt}{\kwnospace{write}\xspace}
+\newcommand{\shuffle}{\kwnospace{shuffle}\xspace}
+\newcommand{\sort}{\kwnospace{sort}\xspace}
+\newcommand{\join}{\kwnospace{join}\xspace}
+\newcommand{\genju}{\kwnospace{junit}\xspace}
+\newcommand{\M}{\mathcal{M}\xspace}
+\newcommand{\C}{\mathcal{C}\xspace}
+\newcommand{\E}{\mathcal{E}\xspace}
+\newcommand{\Etild}{\widetilde{\mathcal{E}}\xspace}
+\newcommand{\T}{\mathcal{T}\xspace}
+\newcommand{\Pold}{P^{(1)}\xspace}
+\newcommand{\Pnew}{P^{(2)}\xspace}
+\newcommand{\Exp}{\mathbb{E}\xspace}
+\newcommand{\prob}{\kwnospace{Pr}\xspace}
+\newcommand{\event}{\kwnospace{E}\xspace}
+%\newcommand{\red}{\color{red}{#1}}
+
+
+

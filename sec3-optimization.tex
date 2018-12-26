@@ -1,0 +1,123 @@
+\section{Optimization}
+\label{sec:opt}
+
+\cliquejoin is proposed for unlabelled graphs and implemented in Map-Reduce. In this section, we introduce \gencliqjoin, our revision of \cliquejoin to extend the algorithm to labelled graphs and dataflow model.
+
+\subsection{Cost Analysis for labelled Matching}
+
+We can use the label information in the graph to refine the result size estimation strategy in \gencliqjoin. Intuitively, we should process query graphs with rare labels as fast as possible to reduce the cost. \\
+
+We use $\Pr_{G}(\iota)$ to denote the probability of the label $\iota$ that appears in a certain node of data graph $G$. Then, \eqref{eq:r} can be refined as:
+\begin{equation} \label{eq:rr}
+|R_{G}(q^{(2)})|=\eta\lambda |R_{G}(q^{(1)})|
+\end{equation}
+
+Similarly, the value of $\eta$ is considered in two cases:
+
+\begin{itemize}
+\item \textbf{(Case 1)} If $v'\not\in V(q^{(1)})$, a new vertex is introduced in $q^{(2)}$ as well as a new edge. In this case, we have:
+\begin{equation} \label{eq6-new}
+ \textstyle \eta = \Pr_{G}(l(v')) \times \Pr_{G}(l((v,v')))
+\end{equation}
+
+\item \textbf{(Case 2)} If $v'\in V(q^{(1)})$, an edge is added between two existing vertices in $q^{(1)}$. In this case, we have:
+\begin{equation} \label{eq:7-new}
+\textstyle \eta = \Pr_{G}(l((v,v')))
+\end{equation}
+\end{itemize}
+
+In addition, $\Pr_{G} (\iota)$ is calculated using the maximum likelihood estimation via sampling or scanning the data graph $G$.
+
+\subsection{Migration from MapReduce to Dataflow} \label{to-df}
+
+\stitle{Implementation Details.}  The SCP storage mechanism and optimal join plan generation(support both labelled and unlabelled queries) are strictly implemented according to \cite{Lai2016} and the optimized cost model we propose in Section \ref{sec:opt}. Here, given a join plan $J$, we will show the details of how to implement \gencliqjoin in \timely dataflow. 
+
+\sstitle{(1) Building \timely Dataflow.} The building \timely dataflow procedure is shown in Algorithm \ref{alg:build_dataflow}. This algorithm is to compute the join operations round by round to get the final matches $R(q)$ in stream.\\
+
+There are two inputs of the algorithm: a $InputHandle$ set $I$ and join plan $J$. An $InputHandle$ is a handler in \timely to store data. The data in $InputHandle$ can be converted to stream directly by invoking $to\_stream$ operation in \timely. We use $I$ to store all join unit's matches $R(p_i)$, where $p_i \in D$. Join plan $J$ consists of $|J|$ round join configurations. One round configuration $j\in J$ includes left subgraph, denoted as $j.lg$, right subgraph, denoted as $j.rg$, join key, denoted as $j.join\_key$, and batch parameters, denoted as $j.batch\_params$. With the configurations in $j$, we know exactly what we should do in each round of join. \\
+
+In line 1-2, if there is only one element in $I$, it means the query graph $q$ is a join unit, and we don't need to do join operations. Therefore, we just return the streaming result of $I[0]$. In line 3, for the join order is consistent with post-order traversal over the binary tree(e.g. Figure \ref{fig:tree}), we use a stack \textit{StreamStack} to store $R(P_i)$, where $P_i$ is a partial query. In line 5, for each join $j$ in $J$, we first find its left and right subgraph matches in stream, denoted as $LStream, RStream$(line 6), respectively. In line 6-16, we consider two cases: (1) If the left/right subgraph is a join unit, we simply fetch its stream in $I$. (2) If left/right subgraph is a partial query, we can get its stream by popping the top element in $StreamStack$. Then we use \code{BatchJoin} to join $LStream$ and $RStream$ under the configuration $j$(line 17), and push the result stream $RstStream$ onto $StreamStack$(line 18). When we complete the iteration over $J$, we pop the top element as the final result stream, which is $R(q)$.
+
+\begin{algorithm}[htb]
+\SetAlgoVlined
+\SetFuncSty{textsf}
+\SetArgSty{textsf}
+\small
+\caption{\code{BuildDataflow}($InputHandle$ set $I$, join plan $J$)}
+\label{alg:build_dataflow}
+\If{$|I| = 1$} {
+\State{\textbf{Return} $I[0].to\_stream()$;}
+}
+\State{$StreamStack \leftarrow \emptyset$;}\\
+\State{$i \leftarrow 0$;}\\
+\ForAll{$j \in J$}{
+    \State{$LStream \leftarrow \emptyset;$}
+    \State{$RStream \leftarrow \emptyset;$}\\
+    \If{$j.lg$ is a join unit}{
+        \State{$LStream = I[i].to\_stream()$;}\\
+        \State{$i \leftarrow i + 1$;}
+    }
+    \Else{
+        \State{$LStream = StreamStack.Pop()$;}
+    }
+    \If{$j.rg$ is a join unit}{
+        \State{$RStream = I[i].to\_stream()$;}\\
+        \State{$i \leftarrow i + 1$;}
+    }
+    \Else{
+    \State{$RStream = StreamStack.Pop()$;}
+    }
+    \State{$RstStream =  \code{BatchJoin}(LStream, RStream, j)$;}\\
+    \State{$StreamStack.Push(RstStream)$;}
+}
+\State{\textbf{Return} $StreamStack.Pop()$;}
+\end{algorithm}
+
+
+\sstitle{(2) Computing Join Unit Matches.} Before we run Algorithm \ref{alg:build_dataflow}, we need to precompute all join unit matches $R(p_i)$, where $p_i \in D$. The process of computing $R(p_i)$ is illustrated in Algorithm \ref{alg:join_unit_comp}. The inputs of the algorithm include join plan $J$ and the local data graph $G$. In line 1, we initialize \textit{InputHandle} set $I$ with length $|J.D|$, which is exactly the number of join units in $J$. In line 3-11, for each join $j\in J$, if left/right subgraph $j.lg/j.rg$ is a join unit, we compute its matches $R_G(j.lg)/R_G(j.rg)$ in local graph $G$ and send them to the corresponding input handler $I[i]$, where $p_i$ is the $i$-th join unit in $J$. In line 12, we return the join unit matches $I$. 
+
+
+\begin{algorithm}[htb]
+\SetAlgoVlined
+\SetFuncSty{textsf}
+\SetArgSty{textsf}
+\small
+\caption{\code{CompUnitMatches}(join plan configuration set $J$, local data graph $G$)}
+\label{alg:join_unit_comp}
+\State{$I \leftarrow$ new $InputHandle$ set with size of $|J.D|$;}\\
+\State{$i \leftarrow 0$;}\\
+\ForAll{$j \in J$}{
+    \If{$j.lg$ is a join unit}{
+        \State{$M \leftarrow R_{G}(j.lg)$;}\\
+        \State{send $M$ to $I[i]$;}\\
+        \State{$i \leftarrow i + 1$;}
+    }
+     \If{$j.rg$ is a join unit}{
+        \State{$M \leftarrow R_{G}(j.rg)$;}\\
+        \State{send $M$ to $I[i]$;}\\
+        \State{$i \leftarrow i + 1$;}
+    }
+}
+\State{\textbf{Return} $I$;}
+\end{algorithm}
+
+
+\sstitle{(3) Joining Two Streams in Batch.} We observe that when directly implementing join of two streams, the huge intermediate results on large data graph will consume up the memory. Therefore, we implement the external hash join following \textit{buffer-and-batch} idea to save memory, which is shown in Algorithm \ref{alg:batch_join}. The inputs of the algorithm are two streams $S_1, S_2$ and the join configuration $j$. In line 1-2, we buffer the data in $S_1/S_2$ to $B_1/B_2$. More specifically, we buffer the data from stream to a given threshold configured in $j.batch\_params$, and sort it according to $j.join\_key$ before spilling to the disk. In line 3-7, while the buffered data $B_1/B_2$ is not empty, we read the data from disk to $buffer_1/buffer_2$ batch by batch(line 4-5). Then we join $buffer_1$ and $buffer_2$ according to the join key in $j$, and output the result(line 6-7). In this way, the memory consumed by each join is one batch of data and we can configure the batch size in $j.batch\_params$ according to the machine's memory capacity. 
+
+
+\begin{algorithm}[htb]
+\SetAlgoVlined
+\SetFuncSty{textsf}
+\SetArgSty{textsf}
+\small
+\caption{\code{BatchJoin}(left stream $S_1$, right stream $S_2$, join configuration $j$)}
+\label{alg:batch_join}
+\State{$B_1 \leftarrow S_1.buffer(j)$;}\\
+\State{$B_2 \leftarrow S_2.buffer(j)$;}\\
+\While{$B_1 \not= \emptyset$ and $B_2 \not= \emptyset$ }{
+    \State{$buffer_1 \leftarrow B_1.next\_batch()$;}\\
+    \State{$buffer_2 \leftarrow B_2.next\_batch()$;}\\
+    \State{$result \leftarrow buffer_1 \Join buffer_2$ according to $j.join\_key$;}\\
+    \State{\textbf{Output} $result$;}
+}
+\end{algorithm}
