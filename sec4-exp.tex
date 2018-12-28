@@ -38,7 +38,7 @@ uk2002 & UK & 18.5 & 298.11 & 16.1 & 194,955\\
   \label{fig:unlq}
 \end{figure}
 
-\stitle{Exp1 - Vary Queries.} We compare \gencliqjoin with \cliquejoin by testing all queries on LJ, which is shown in \reffig{vary_query}. We can see that for enumerating the join unit $q_3$(4-clique) and $q_5$(5-clique), \gencliqjoin outperforms \cliquejoin by more than one order of magnitude. For $q_2$, \gencliqjoin is 2x faster than \cliquejoin. However, \cliquejoin outperforms \gencliqjoin in $q_1$ and $q_5$. TODO: Explain them.
+\stitle{Exp1 - Vary Queries.} We compare \gencliqjoin with \cliquejoin by testing all queries on LJ, which is shown in \reffig{vary_query}.Note that for better presentation, the ordinate is calculated by $logT$, where $T$ is the query time. We can see that for enumerating the join unit $q_3$(4-clique) and $q_5$(5-clique), \gencliqjoin outperforms \cliquejoin by more than one order of magnitude. For $q_2$, \gencliqjoin is 2 times faster than \cliquejoin. However, \cliquejoin outperforms \gencliqjoin in $q_1$ and $q_5$. TODO: Explain them.
 
 \begin{figure}[htb]
   \centering
@@ -47,11 +47,11 @@ uk2002 & UK & 18.5 & 298.11 & 16.1 & 194,955\\
   \label{fig:vary_query}
 \end{figure}
 
-\stitle{Exp2 - Vary Datasets.} We compare \gencliqjoin with \cliquejoin by querying $q_2$ and $q_5$ on all datasets in order to show the good performance over different data properties. The results are shown in \reffig{vary_dataset}. We can see that, for querying $q_2$, \gencliqjoin generally outperforms \cliquejoin by around 2 times, despite of using fewer workers compared with \cliquejoin's workers in cluster. When querying $q_5$, \gencliqjoin is 3 to 10 times faster than \cliquejoin. 
+\stitle{Exp2 - Vary Datasets.} We compare \gencliqjoin with \cliquejoin by querying $q_2$ and $q_5$ on all datasets in order to show the good performance over different data properties. The results are shown in \reffig{vary_dataset}. We can see that, when querying $q_2$, \gencliqjoin generally outperforms \cliquejoin by around 2 times. When querying $q_5$, \gencliqjoin is 3 to 10 times faster than \cliquejoin. 
 
 \begin{figure}[htb]
   \flushleft
-  \includegraphics[scale=0.27]{figures/exp2.pdf}
+  \includegraphics[scale=0.3]{figures/exp2.pdf}
   \caption{\small{Vary Datasets.}}
   \label{fig:vary_dataset}
 \end{figure}
@@ -61,7 +61,7 @@ uk2002 & UK & 18.5 & 298.11 & 16.1 & 194,955\\
 
 \begin{figure}[htb]
   \centering
-  \includegraphics[scale=0.4]{figures/exp3.pdf}
+  \includegraphics[scale=0.37]{figures/exp3.pdf}
   \caption{\small{Unlabelled Scalability.}}
   \label{fig:unl_sca}
 \end{figure}
@@ -101,7 +101,7 @@ uk2002 & UK & 18.5 & 298.11 & 16.1 & 194,955\\
   \label{fig:lq}
 \end{figure}
 
-\stitle{Exp4 - All Labelled Queries.} We perform \gencliqjoin for all queries on all datasets, and the results are illustrated in \reffig{all_lq}. We can see that \gencliqjoin can finish subgraph matching in tens of seconds for $q_2, q_3, q_4, q_5, q_6$ in all data graphs, even if DG60 is a billion scale graph. We notice that the query time for $q_1$ increases sharply when the dataset becomes larger. The reason is that the algorithm spends a lot of time computing the stars' matches in $q_1$($q_1$ is decomposed to two 2-star(s)) due to the poor filter information of $q_1$'s join units in data graph.
+\stitle{Exp4 - All Labelled Queries.} We perform \gencliqjoin for all queries on all datasets, and the results are illustrated in \reffig{all_lq}(whose ordinate is the logarithm of query time $T$). We can see that \gencliqjoin can finish subgraph matching in tens of seconds for $q_2, q_3, q_4, q_5, q_6$ in all data graphs, even if DG60 is a billion scale graph. We notice that the query time for $q_1$ increases sharply when the dataset becomes larger. The reason is that the algorithm spends a lot of time computing the stars' matches in $q_1$($q_1$ is decomposed to two 2-star(s)) due to the poor filter information of $q_1$'s join units in data graph.
 
 \begin{figure}[htb]
   \centering
@@ -110,7 +110,7 @@ uk2002 & UK & 18.5 & 298.11 & 16.1 & 194,955\\
   \label{fig:all_lq}
 \end{figure}
 
-\stitle{Exp5 - Labelled Scalability.} We evaluate the labelled matching scalability of $q_1$ and $q_4$ on DG10 by varying the number of nodes used in the cluster(6, 8, 10), and the results are demonstrated in \reffig{l_sca}. We can see that when decreasing the number of machines used in the cluster, the query time slightly increases, which show that \gencliqjoin has great scalability for labelled matching.
+\stitle{Exp5 - Labelled Scalability.} We evaluate the labelled matching scalability of $q_1$ and $q_4$ on DG10 by varying the number of nodes used in the cluster(6, 8, 10), and the results are demonstrated in \reffig{l_sca}. We can see that when decreasing the number of machines used in the cluster, the query time slightly increases, which shows that \gencliqjoin has great scalability for labelled matching.
 
 \begin{figure}[htb]
   \centering
