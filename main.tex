@@ -38,17 +38,17 @@
 \title{Improving Distributed Subgraph Matching Algorithm on Timely Dataflow}
 
 \author[1]{Zhengmin Lai}
-\author[2]{Longbin Lai}
 \author[2]{Zhengyi Yang}
+\author[2]{Longbin Lai}
 \affil[1]{East China Normal University, Shanghai, China}
 \affil[2]{The University of New South Wales, Sydney, Australia}
 \affil[1]{zmlai@stu.ecnu.edu.cn}
-\affil[2]{\{llai, zyang\}@cse.unsw.edu.au}
+\affil[2]{\{zyang, llai\}@cse.unsw.edu.au}
 
 \maketitle
 
 \begin{abstract}
-The subgraph matching problem is a well-known NP-hard problem: given a query graph $q$ and a data graph $G$, we need to find all subgraphs matching $q$ in $G$. Subgraph matching plays a vital role in the fields of e-commerce, social media and biological science. \cliquejoin is a distributed subgraph matching algorithm that is designed to be efficient and scalable. While most of the graphs in real applications are labelled graphs, \cliquejoin, however, does not propose a cost evaluation strategy for them, which limits its application in practice. In the meanwhile, \cliquejoin is based on Map-Reduce, by which the performance of the algorithm can be greatly affected due to the frequent I/O operations when handling intermediate results in the multi-round join process. Discovering the limitations of \cliquejoin, this paper proposes \gencliqjoin by extending the cost evaluation function in \cliquejoin to generate optimal join plan for labelled graphs in the distributed context. In addition, this paper implements \gencliqjoin on \timely dataflow system instead of Map-Reduce to avoid frequent I/O operations. The generality and performance of \cliquejoin can be significantly improved after solving these two limitations. This paper also carries out large scale experiments, whose results show that the algorithm after being improved is 2 to 10 times faster than the original Map-Reduce version for unlabelled matching, and has excellent performance and scalability doing labelled matching.
+The subgraph matching problem is defined to find all subgraphs of a data graph that are isomorphic to a given query graph. Subgraph matching plays a vital role in the fields of e-commerce, social media and biological science. \cliquejoin is a distributed subgraph matching algorithm that is designed to be efficient and scalable. However, \cliquejoin is originally developed on MapReduce, thus the performance of the algorithm may be affected by the notorious I/O issue of MapReduce while processing multi-round task. Meanwhile, \cliquejoin does not propose a cost evaluation strategy for labelled graphs, which limits its application in practice where most graphs are labelled. Targeting the limitations of \cliquejoin, we propose \gencliqjoin to improve \cliquejoin in two aspects. Firstly, we implement \cliquejoin on \timely dataflow system instead of MapReduce to avoid the I/O issue. Secondly, we extend the cost evaluation function in \cliquejoin to compute optimal join plan for labelled graphs in the distributed context. We conduct extensive experiments to show that the proposed method is up to 10 times faster than the MapReduce version for unlabelled matching, and it achieves good performance and scalability for labelled matching.
 \end{abstract}
 
 \begin{IEEEkeywords}

@@ -10,13 +10,13 @@ In this section, we conduct extensive experiments for \gencliqjoin on both unlab
 
 \subsection{Unlabelled Matching}
 \label{sec:unlabelled_matching}
-\stitle{Datasets.} We evaluate 3 real graphs of different sizes and types. The sources of these graphs are from Snap\footnote{\url{http://snap.stanford.edu/data/index.html}} and WebG\footnote{\url{http://law.di.unimi.it/datasets.php}}. We consider the following two graph types: Social Network (Soc) and Web Graph (Web).  We list the evaluated graphs in \reftable{unl_datasets}. Note that both $|V(G)|$ and $|E(G)|$ are in millions. 
+\stitle{Datasets.} We evaluate 3 real graphs of different sizes and types. The sources of these graphs are from Snap\footnote{\url{http://snap.stanford.edu/data/index.html}} and WebG\footnote{\url{http://law.di.unimi.it/datasets.php}}. We consider the following two graph types: Social Network (Soc) and Web Graph (Web).  We list the evaluated graphs in \reftable{unl_datasets}. Note that both $N=|V(G)|$ and $M=|E(G)|$ are in millions. 
 
 \begin{table}
 \centering
  \begin{tabular}{|c|c|c|c|c|c|c|} 
  \hline
- Datasets & Name & $|V(G)|/mil$ & $|E(G)|/mil$ & $\overline{d(G)}$ & $D(G)$ \Ts\Bs \\
+ Datasets & Name & $N/mil$ & $M/mil$ & $d_{avg}(G)$ & $d_{max}(G)$ \Ts\Bs \\
  \hline\hline
  livejournal & LJ & 4.85 & 43.37 & 8.9 & 20,333  \\
   \hline
@@ -38,7 +38,7 @@ uk2002 & UK & 18.5 & 298.11 & 16.1 & 194,955\\
   \label{fig:unlq}
 \end{figure}
 
-\stitle{Exp1 - Vary Queries.} We compare \gencliqjoin with \cliquejoin by testing all queries on LJ, which is shown in \reffig{vary_query}. Note that for better presentation, the ordinate is calculated by $logT$, where $T$ is the query time. We can see that for enumerating the join unit $q_3$(4-clique) and $q_5$(5-clique), \gencliqjoin outperforms \cliquejoin by more than one order of magnitude. For $q_2$, \gencliqjoin is 2 times faster than \cliquejoin. However, \cliquejoin outperforms \gencliqjoin in $q_1$ and $q_5$. TODO: Explain them.
+\stitle{Exp1 - Vary Queries.} We compare \gencliqjoin with \cliquejoin by testing all queries on LJ, which is shown in \reffig{vary_query}. Note that for better presentation, the ordinate is calculated by $logT$, where $T$ is the query time. We can see that for enumerating the join unit $q_3$(4-clique) and $q_5$(5-clique), \gencliqjoin outperforms \cliquejoin by more than 10 times. For $q_2$, \gencliqjoin is 2 times faster than \cliquejoin. However, \cliquejoin outperforms \gencliqjoin in $q_1$ and $q_4$. The reason is that the original implementation of \cliquejoin is hard-coded for each query, where it can do specific optimizations for a certain query. However, since \gencliqjoin targets a generic implementation that can handle any query, we can not perform many optimizations for queries, which may cause incompetent results compared with \cliquejoin in some queries like $q_1$ and $q_4$.
 
 \begin{figure}[htb]
   \centering
@@ -51,7 +51,7 @@ uk2002 & UK & 18.5 & 298.11 & 16.1 & 194,955\\
 
 \begin{figure}[htb]
   \flushleft
-  \includegraphics[scale=0.3]{figures/exp2.pdf}
+  \includegraphics[scale=0.35]{figures/exp2.pdf}
   \caption{\small{Vary Datasets.}}
   \label{fig:vary_dataset}
 \end{figure}
@@ -75,7 +75,7 @@ uk2002 & UK & 18.5 & 298.11 & 16.1 & 194,955\\
 \centering
  \begin{tabular}{|c|c|c|c|c|c|c|} 
  \hline
- Name & $|V(G)|/mil$ & $|E(G)|/mil$ & $\overline{d(G)}$  & $D(G)$ & \#Labels \Ts\Bs \\
+ Name & $N/mil$ & $ M/mil$ & $d_{avg}(G)$ & $d_{max}(G)$ & \#Labels \Ts\Bs \\
  \hline\hline
  DG01 & 3.2 & 17.24 & 10.84 & 464,368  & 11 \\
   \hline

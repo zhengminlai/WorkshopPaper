@@ -1,9 +1,9 @@
-\section{Optimization}
+\section{Optimizations}
 \label{sec:opt}
 
-\cliquejoin is proposed for unlabelled graphs and implemented in Map-Reduce. In this section, we introduce \gencliqjoin, our revision of \cliquejoin to extend the algorithm to labelled graphs and dataflow model.
+\cliquejoin is proposed for unlabelled graphs and implemented on MapReduce. In this section, we introduce \gencliqjoin, our revision of \cliquejoin to extend the algorithm to labelled graphs and dataflow model.
 
-\subsection{Cost Analysis for labelled Matching}
+\subsection{Cost Analysis for Labelled Matching}
 
 We can use the label information in the graph to refine the result size estimation strategy in \gencliqjoin. Intuitively, we should process query graphs with rare labels as fast as possible to reduce the cost. \\
 
@@ -17,12 +17,12 @@ Similarly, the value of $\eta$ is considered in two cases:
 \begin{itemize}
 \item \textbf{(Case 1)} If $v'\not\in V(q^{(1)})$, a new vertex is introduced in $q^{(2)}$ as well as a new edge. In this case, we have:
 \begin{equation} \label{eq6-new}
- \textstyle \eta = \Pr_{G}(l(v')) \times \Pr_{G}(l((v,v')))
+ \textstyle \eta = \Pr_{G}(L(v')) \times \Pr_{G}(L((v,v')))
 \end{equation}
 
 \item \textbf{(Case 2)} If $v'\in V(q^{(1)})$, an edge is added between two existing vertices in $q^{(1)}$. In this case, we have:
 \begin{equation} \label{eq:7-new}
-\textstyle \eta = \Pr_{G}(l((v,v')))
+\textstyle \eta = \Pr_{G}(L((v,v')))
 \end{equation}
 \end{itemize}
 
@@ -30,7 +30,7 @@ In addition, $\Pr_{G} (\iota)$ is calculated using the maximum likelihood estima
 
 \subsection{Migration from MapReduce to Dataflow} \label{to-df}
 
-\stitle{Implementation Details.}  The SCP storage mechanism and optimal join plan generation(support both labelled and unlabelled queries) are strictly implemented according to \cite{Lai2016} and the optimized cost model we propose in Section \ref{sec:opt}. Here, given a join plan $J$, we will show the details of how to implement \gencliqjoin in \timely dataflow. 
+\stitle{Implementation Details.}  The SCP storage mechanism and optimal join plan generation(support both labelled and unlabelled queries) are strictly implemented according to \cite{Lai2016} and the optimized cost model we propose in Section \ref{sec:opt}. Here, given a join plan $J$, we will show the details of how to implement \gencliqjoin on \timely dataflow. 
 
 \sstitle{(1) Building \timely Dataflow.} The building \timely dataflow procedure is shown in Algorithm \ref{alg:build_dataflow}. This algorithm is to compute the join operations round by round to get the final matches $R(q)$ in stream.\\
 
@@ -54,20 +54,20 @@ In line 1-2, if there is only one element in $I$, it means the query graph $q$ i
     \State{$LStream \leftarrow \emptyset;$}
     \State{$RStream \leftarrow \emptyset;$}\\
     \If{$j.lg$ is a join unit}{
-        \State{$LStream = I[i].to\_stream()$;}\\
+        \State{$LStream \leftarrow I[i].to\_stream()$;}\\
         \State{$i \leftarrow i + 1$;}
     }
     \Else{
-        \State{$LStream = StreamStack.Pop()$;}
+        \State{$LStream \leftarrow StreamStack.Pop()$;}
     }
     \If{$j.rg$ is a join unit}{
-        \State{$RStream = I[i].to\_stream()$;}\\
+        \State{$RStream \leftarrow I[i].to\_stream()$;}\\
         \State{$i \leftarrow i + 1$;}
     }
     \Else{
-    \State{$RStream = StreamStack.Pop()$;}
+    \State{$RStream \leftarrow StreamStack.Pop()$;}
     }
-    \State{$RstStream =  \code{BatchJoin}(LStream, RStream, j)$;}\\
+    \State{$RstStream \leftarrow  \code{BatchJoin}(LStream, RStream, j)$;}\\
     \State{$StreamStack.Push(RstStream)$;}
 }
 \State{\textbf{Return} $StreamStack.Pop()$;}

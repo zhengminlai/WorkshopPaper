@@ -1,22 +1,23 @@
 \section{Preliminaries}
 \label{sec:prelim}
-A graph $g$ can be represented as $g=(V, E, \Sigma_V,\Sigma_E, L)$, where $V(g)$ is the vertex set of $g$, $E(g) \subseteq V(g) \times V(g)$ is the edge set of $g$, $\Sigma_V$ and $\Sigma_E$ are the sets of vertex and edge labels, and $L$ is a label function that maps each node $v\in V(g)$ and each edge $e \in E(g)$ to a label. For unlabelled graph, $L$ simply maps all nodes and edges to $\emptyset$. For a node $u\in V(g)$, we use $id(u)$ to denote its index, $\mathcal{N}(u)$ to denote its neighbours, $d(u)=|\mathcal{N}(u)|$ to denote its degree, $N=|V(g)|$ to denote its node size, $M=|E(g)|$ to denote its edge size, $\overline{d(g)} = 2|E(g)|/|V(g)|$ and $D(g) = max_{u\in V(g)}d_g(u)$ to denote its average and maximum degree, respectively. A graph g is a \textit{clique} if for any pair of nodes $u, v \in V(g)$, we have $(u, v) \in E(g)$. $k-clique$ is a clique consists of $k$ nodes. A graph $g$ is a \textit{star} if it is a tree with depth 1. $k-star$ is a tree with one root node and $k$ leaf nodes.\\
+A graph $g$ is represented as a tuple $g=(V, E, \Sigma_V,\Sigma_E, L)$, where $V(g)$ is the vertex set of $g$, $E(g) \subseteq V(g) \times V(g)$ is the edge set of $g$, $\Sigma_V$ and $\Sigma_E$ are the sets of vertex and edge labels, and $L$ is a label function that maps each node $v\in V(g)$ and each edge $e \in E(g)$ to a label. For unlabelled graph, $\Sigma_V$ and $\Sigma_E$ are $\emptyset$. For a node $v\in V(g)$, we use $id(v)$ to denote its index, $Nbr(v)$ to denote its neighbours, $d(v)=|Nbr(v)|$ to denote its degree, $N=|V(g)|$ and  $M=|E(g)|$ to denote its node and edge size, respectively. We use $d_{avg}(g) = 2N/M$ and $d_{max}(g) = MAX_{v\in V(g)}d_g(v)$ to denote $g$'s average and maximum degree, respectively. A graph g is a \textit{clique} if it is a complete graph. $k-clique$ is a clique consisting of $k$ nodes. A graph $g$ is a \textit{star} if it is a tree with depth 1. $k-star$ is a tree with one root node and $k$ leaf nodes.\\
 
-Given two graphs $g_1$ and $g_2$, $g_1$ is a subgraph of $g_2$ if $V(g_1) \subseteq V(g_2)$ and $E(g_1) \subseteq E(g_2)$.\\
+Given two graphs $g_1$ and $g_2$, $g_1$ is a subgraph of $g_2$, denoted as $g_1 \subseteq g_2$ iff $V(g_1) \subseteq V(g_2)$ and $E(g_1) \subseteq E(g_2)$.\\
 
 \begin{definition}
 \label{def:isomorphism}{\textbf{(Subgraph Isomorphism)}} Given a query graph $q$ and data graph $G$, $q$ is subgraph isomorphic to $G$ iff there exists a bijective mapping function $f: V(q) \rightarrow V(G)$ such that, (1) $\forall v \in V(q)$, $L_q(v) = L_{G}(f(v))$; (2) $\forall (v_1, v_2) \in E(q)$, $(f(v_1), f(v_2)) \in E(G)$, and $L_q((v_1, v_2)) = L_{G}((f(v_1), f(v_2)))$. \\
 
-Here, we call a subgraph isomorphism a \textit{Match}. Given the query vertices $\{v_1, v_2, ..., v_n\}$, a match $f$ can be represented as $\{u_{k_1}, u_{k_2}, ..., u_{k_n}\}$, where $u_{k_i} = f(v_i)$. An \textit{automorphism} is a graph that is isomorphic to itself.
+Here, we call a subgraph isomorphism $f$ a \textit{Match}, which can be represented as a tuple $Tu$ consisting of data vertices and each data vertex $u_j$ in $Tu$ matches the vertex $v_i$ in query graph($u_j = f(v_i)$). An \textit{automorphism} is a graph that is isomorphic to itself.
 \end{definition}
 
 \stitle{Problem Statement.} Given a query graph $q$ and data graph $G$, \textit{subgraph matching} is to enumerate all subgraphs in $G$ that are isomorphic to $q$.\\
 
-Given a query graph $q$ and data graph $G$, we denote the subgraph matching result set as $R_G(q)$(or $R(q)$ if the context is clear).\\
+Given a query graph $q$ and data graph $G$, we denote the subgraph matching result set as $R_G(q)$(or $R(q)$ if the context is clear). \\
 
 \begin{example}
 \label{ex:subgraph_isomorphism}	
-In \reffig{subgraph_isomorphism}, we give an unlabelled query graph $q$ and data graph $G$. We use symmetry breaking technique\cite{Grochow2007} to assign partial order for query graph to avoid duplicated enumeration caused by automorphism. In this example, the partial order of query graph can be $\{v_1 < v_3, v_2 < v_4\}$ . There are two matches: $\{u_2, u_1, u_3, u_4\}$ and $\{u_1, u_2, u_5, u_4\}$. We can check the order constraint for the first match, which is $\{u_2, u_1, u_3, u_4\}$. As we have order $\{v_1 < v_3, v_2 < v_4\}$, it constraints that we should have $f(v_1) < f(v_3)$, $f(v_2) < f(v_4), $where $u_2 < u_3$, $u_1 < u_4$ satisfies this constraint. Note that we have $f(v_i) < f(v_j)$ iff $id(f(v_i)) < id(f(v_j))$. 
+In \reffig{subgraph_isomorphism}, we give an unlabelled query graph $q$ and data graph $G$. We use symmetry breaking technique\cite{Grochow2007} to assign partial order for query graph to avoid duplicated enumeration caused by automorphism. In this example, the partial order of query graph can be $\{v_2 < v_5\}$ . There are two matches of $(v_1, v_2, v_3, v_4, v_5)$, which are $(u_1, u_2, u_3, u_5, u_6)$ and $(u_4, u_3, u_2, u_6, u_5)$. We can check the order constraint for the first match, which is $(u_1, u_2, u_3, u_5, u_6)$. As we have order $v_2 < v_5$, it constraints that we should have $f(v_2) < f(v_5)$, where $u_2 = f(v_2), u_6 = f(v_5)$ and $u_2 < u_6$ satisfies this constraint. Note that for two nodes $u_i, u_j \in V(G)$, we have $u_i < u_j$ if $id(u_i) < id(u_j)$. 
+
 \end{example}
 
 \begin{figure}[htb]
@@ -32,14 +33,14 @@ Regarding query vertices as attributes and data vertices as tuples in the relati
 \label{eq:subgraph_isomorphism}
 \small
 \begin{aligned}
-	R(q) &= R(v_1, v_2) \Join R(v_2, v_3) \\
-	&\Join R(v_3, v_4) \Join R(v_1, v_4) \Join R(v_2, v_4).
+	R(q) &= R(v_1, v_2) \Join R(v_2, v_3) \Join R(v_3, v_4) \\ 	
+	&\Join R(v_4, v_5) \Join R(v_1, v_5) \Join R(v_2, v_5).
 \end{aligned}
 \end{equation}
 
 \stitle{CliqueJoin.} Generally speaking, the state-of-the-art algorithm \cliquejoin follows the decomposition-and-join framework to do subgraph matching. The main idea of \cliquejoin can be concluded as follows. 
 
-\sstitle{(1) SCP Storage Mechanism.} In the SCP graph storage mechanism, denoted as $\Phi(G)$, we have $\Phi(G)=\{G_v\ |\ v\in V(G)\}$, $V(G_v)={v}\cup\mathcal{N}(v)$ and $E(G_v)=\{(v,v')\ |\ v'\in\mathcal{N}(v)\}\cup\{(v',v")\ |\ v',v"\in\mathcal{N}(v)\wedge(v',v")\in E(G)\wedge v<v'\wedge v<v"\}$, where $G_v\subseteq G$ is a connected subgraph of $G$ with $v\in V(G_v)$, and $\bigcup_{u\in V(G)}E(G_v)=E(G)$. Each $G_v$ is called the \textit{local graph} of $v$. Suppose the data graph $G$ is maintained in the distributed file system in the form of key-value pairs $(v;G_v)$ for each $v\in V(G)$ according to $\Phi(G)$, a \textit{join unit} is a structure whose matches can be enumerated independently in each local graph $G_v\in \Phi(G)$. For \cliquejoin, the join unit can either be a clique or a star. 
+\sstitle{(1) SCP Storage Mechanism.} In the SCP storage mechanism for data graph $G$, denoted as $\Phi(G)$, we have $\Phi(G)=\{G_v\ |\ v\in V(G)\}$, $V(G_v)=\{v\} \cup Nbr(v)$ and $E(G_v)=\{(v,v')\ |\ v'\in Nbr(v)\}\cup\{(v',v")\ |\ v',v"\in Nbr(v)\wedge(v',v")\in E(G)\wedge v<v'\wedge v<v"\}$, where $G_v\subseteq G$ is a connected subgraph of $G$ with $v\in V(G_v)$, and $\bigcup_{u\in V(G)}E(G_v)=E(G)$. Each $G_v$ is called the \textit{local graph} of $v$. Suppose the data graph $G$ is maintained in the distributed file system in the form of key-value pairs $(v;G_v)$ for each $v\in V(G)$ according to $\Phi(G)$, a \textit{join unit} is a structure whose matches can be enumerated independently in each local graph $G_v\in \Phi(G)$. For \cliquejoin, the join unit can either be a clique or a star. 
 
 \sstitle{(2) Query Decomposition.} Given a graph storage $\Phi(G)$ and query graph $q$, a query decomposition of $q$ is defined as $D=\{p_0,p_1,\dots,p_t\}$, where each $p_i\in D(0\leq i\leq t)$ is a \textit{join unit} w.r.t. $\Phi(G)$ and $q = \bigcup_{p_i\in D}p_i$. Given the decomposition $D=\{p_0,p_1,\dots,p_t\}$ of $q$, we solve the subgraph enumeration using $t$ rounds of two-way join:
 
@@ -64,7 +65,7 @@ We denote the set of all possible join plans for query graph $q$ as $\mathcal{S}
 
 \sstitle{(4) Matching Result Estimation.} In order to compute the join plan cost  $\mathcal{C}(\varepsilon)$, \cliquejoin needs to estimate $|R(q)|$ for a given query graph $q$. As most of real-life graphs follow \textit{power-law} random distribution\cite{Chung2003}, \cliquejoin estimates $|R_{G_{PR}}(q)|$ in data graph $G_{PR}$ generated by power-law model.\\
 
-Considering $q$ is constructed from a single edge by extending one edge at a time in steps. Let $q^{(1)}$ and $q^{(2)}$ be two consecutive queries obtained along the process. More specifically, for some $v\in V(q^{(1)})$ and $v'\in V(q^{(2)})$ such that  $(v,v')\not\in E(q^{(1)})$, $q^{(2)}$ is obtained by adding the edge $(v,v')$ to $q^{1}$. Suppose $M$ is a match of $q^{(1)}$, in principal, we extend $M$ by one more edge to get new matches for $q^{(2)}$. Thus, if the expectation of new matches that can be extended for one certain match of $q^{(1)}$ is $\lambda$, we have:
+Considering $q$ is constructed from a single edge by extending one edge at a time in steps. Let $q^{(1)}$ and $q^{(2)}$ be two consecutive queries obtained along the process. More specifically, for some $v\in V(q^{(1)})$ and $v'\in V(q^{(2)})$ such that  $(v,v')\not\in E(q^{(1)})$, $q^{(2)}$ is obtained by adding the edge $(v,v')$ to $q^{1}$. Suppose $f$ is a match of $q^{(1)}$, in principal, we extend $f$ by one more edge to get new matches for $q^{(2)}$. Thus, if the expectation of new matches that can be extended for one certain match of $q^{(1)}$ is $\lambda$, we have:
 \begin{equation} \label{eq:r}
 |R_{G_{PR}}(q^{(2)})|=\lambda |R_{G_{PR}}(q^{(1)})|
 \end{equation}
