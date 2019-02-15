@@ -26,17 +26,17 @@ Similarly, the value of $\eta$ is considered in two cases:
 \end{equation}
 \end{itemize}
 
-In addition, $\Pr_{G} (\iota)$ is calculated using the maximum likelihood estimation via sampling or scanning the data graph $G$.
+In addition, $\Pr_{G} (\iota)$ can be calculated using the maximum likelihood estimation via sampling or scanning the data graph $G$.
 
 \subsection{Migration from MapReduce to Dataflow} \label{to-df}
 
-\stitle{Implementation Details.}  The SCP storage mechanism and optimal join plan generation(support both labelled and unlabelled queries) are strictly implemented according to \cite{Lai2016} and the optimized cost model we propose in Section \ref{sec:opt}. Here, given a join plan $J$, we will show the details of how to implement \gencliqjoin on \timely dataflow. 
+\stitle{Implementation Details.}  The SCP storage mechanism and optimal join plan generation for unlabelled querie are strictly implemented according to \cite{Lai2016}. For labelled queries, we firstly scan the data graph to acquire label frequencies and apply the optimized cost model we propose in Section \ref{sec:opt} afterward. Here, given a join plan $J$, we will show the details of how to implement \gencliqjoin on \timely dataflow next. 
 
-\sstitle{(1) Building \timely Dataflow.} The building \timely dataflow procedure is shown in Algorithm \ref{alg:build_dataflow}. This algorithm is to compute the join operations round by round to get the final matches $R(q)$ in stream.\\
+\sstitle{(1) Building \timely Dataflow.} The procedure of building the dataflow is shown in Algorithm \ref{alg:build_dataflow}. This algorithm is to compute the join operations round by round to get the final matches $R(q)$ in a stream.\\
 
-There are two inputs of the algorithm: a $InputHandle$ set $I$ and join plan $J$. An $InputHandle$ is a handler in \timely to store data. The data in $InputHandle$ can be converted to stream directly by invoking $to\_stream$ operation in \timely. We use $I$ to store all join unit's matches $R(p_i)$, where $p_i \in D$. Join plan $J$ consists of $|J|$ round join configurations. One round configuration $j\in J$ includes left subgraph, denoted as $j.lg$, right subgraph, denoted as $j.rg$, join key, denoted as $j.join\_key$, and batch parameters, denoted as $j.batch\_params$. With the configurations in $j$, we know exactly what we should do in each round of join. \\
+There are two inputs of the algorithm: an $InputHandle$ set $I$ and a join plan $J$. An $InputHandle$ is a handler in \timely to store data. The data in $InputHandle$ can be converted to stream directly by invoking $to\_stream$ operation in \timely. We use $I$ to store all join unit's matches $R(p_i)$, where $p_i \in D$. Join plan $J$ consists of $|J|$ rounds of join configurations. One round configuration $j\in J$ includes left subgraph, denoted as $j.lg$, right subgraph, denoted as $j.rg$, join key, denoted as $j.join\_key$, and batch parameters, denoted as $j.batch\_params$. With the configurations in $j$, we know exactly what we should do in each round of join. \\
 
-In line 1-2, if there is only one element in $I$, it means the query graph $q$ is a join unit, and we don't need to do join operations. Therefore, we just return the streaming result of $I[0]$. In line 3, for the join order is consistent with post-order traversal over the binary tree(e.g. Figure \ref{fig:tree}), we use a stack \textit{StreamStack} to store $R(P_i)$, where $P_i$ is a partial query. In line 5, for each join $j$ in $J$, we first find its left and right subgraph matches in stream, denoted as $LStream, RStream$(line 6), respectively. In line 6-16, we consider two cases: (1) If the left/right subgraph is a join unit, we simply fetch its stream in $I$. (2) If left/right subgraph is a partial query, we can get its stream by popping the top element in $StreamStack$. Then we use \code{BatchJoin} to join $LStream$ and $RStream$ under the configuration $j$(line 17), and push the result stream $RstStream$ onto $StreamStack$(line 18). When we complete the iteration over $J$, we pop the top element as the final result stream, which is $R(q)$.
+In line 1-2, if there is only one element in $I$, it means the query graph $q$ is a join unit, and we don't need to do join operations. Therefore, we just return the streaming result of $I[0]$. In line 3, for the join order is consistent with post-order traversal over the binary tree (e.g. Figure \ref{fig:tree}), we use a stack \textit{StreamStack} to store $R(P_i)$, where $P_i$ is a partial query. In line 5, for each join $j$ in $J$, we first find its left and right subgraph matches in stream, denoted as $LStream, RStream$ (line 6), respectively. In line 6-16, we consider two cases: (1) If the left/right subgraph is a join unit, we simply fetch its stream in $I$. (2) If left/right subgraph is a partial query, we can get its stream by popping the top element in $StreamStack$. Then we use \code{BatchJoin} to join $LStream$ and $RStream$ under the configuration $j$ (line 17), and push the result stream $RstStream$ onto $StreamStack$ (line 18). When we complete the iteration over $J$, we pop the top element as the final result stream, which is $R(q)$.
 
 \begin{algorithm}[htb]
 \SetAlgoVlined
@@ -58,19 +58,19 @@ In line 1-2, if there is only one element in $I$, it means the query graph $q$ i
         \State{$i \leftarrow i + 1$;}
     }
     \Else{
-        \State{$LStream \leftarrow StreamStack.Pop()$;}
+        \State{$LStream \leftarrow StreamStack.pop()$;}
     }
     \If{$j.rg$ is a join unit}{
         \State{$RStream \leftarrow I[i].to\_stream()$;}\\
         \State{$i \leftarrow i + 1$;}
     }
     \Else{
-    \State{$RStream \leftarrow StreamStack.Pop()$;}
+    \State{$RStream \leftarrow StreamStack.pop()$;}
     }
     \State{$RstStream \leftarrow  \code{BatchJoin}(LStream, RStream, j)$;}\\
     \State{$StreamStack.Push(RstStream)$;}
 }
-\State{\textbf{Return} $StreamStack.Pop()$;}
+\State{\textbf{Return} $StreamStack.pop()$;}
 \end{algorithm}
 
 
@@ -102,7 +102,7 @@ In line 1-2, if there is only one element in $I$, it means the query graph $q$ i
 \end{algorithm}
 
 
-\sstitle{(3) Joining Two Streams in Batch.} We observe that when directly implementing join of two streams, the huge intermediate results on large data graph will consume up the memory. Therefore, we implement the external hash join following \textit{buffer-and-batch} idea to save memory, which is shown in Algorithm \ref{alg:batch_join}. The inputs of the algorithm are two streams $S_1, S_2$ and the join configuration $j$. In line 1-2, we buffer the data in $S_1/S_2$ to $B_1/B_2$. More specifically, we buffer the data from stream to a given threshold configured in $j.batch\_params$, and sort it according to $j.join\_key$ before spilling to the disk. In line 3-7, while the buffered data $B_1/B_2$ is not empty, we read the data from disk to $buffer_1/buffer_2$ batch by batch(line 4-5). Then we join $buffer_1$ and $buffer_2$ according to the join key in $j$, and output the result(line 6-7). In this way, the memory consumed by each join is one batch of data and we can configure the batch size in $j.batch\_params$ according to the machine's memory capacity. 
+\sstitle{(3) Joining Two Streams in Batch.} We observe that when directly implementing join of two streams, the huge intermediate results on large data graph will very likely consume the memory up. Therefore, we implement the external hash join following \textit{buffer-and-batch} idea to save memory, which is shown in Algorithm \ref{alg:batch_join}. The inputs of the algorithm are two streams $S_1, S_2$ and the join configuration $j$. In line 1-2, we buffer the data in $S_1/S_2$ to $B_1/B_2$. More specifically, we buffer the data from stream to a given threshold configured in $j.batch\_params$, and sort it according to $j.join\_key$ before spilling to the disk. In line 3-7, while the buffered data $B_1/B_2$ is not empty, we read the data from disk to $buffer_1/buffer_2$ batch by batch (line 4-5). Then we join $buffer_1$ and $buffer_2$ according to the join key in $j$, and output the result (line 6-7). In this way, the memory consumed by each join is one batch of data and we can configure the batch size in $j.batch\_params$ according to the machine's memory capacity. 
 
 
 \begin{algorithm}[htb]
