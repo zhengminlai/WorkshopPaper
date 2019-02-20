@@ -8,10 +8,10 @@ matplotlib.rcParams['text.usetex'] = True
 
 
 def draw_exp1():
-    # gencliq
-    d1 = to_log((570, 57, 4, 4203, 99))
+    # CliqueJoin++
+    d1 = (570, 57, 4, 4203, 99)
     # cliq
-    d2 = to_log((220, 107, 60, 1013, 1206))
+    d2 = (220, 107, 60, 1013, 1206)
 
     xticks = ('$q_1$', '$q_2$', '$q_3$', '$q_4$', '$q_5$')
 
@@ -22,12 +22,13 @@ def draw_exp1():
     # 对两个列进行画图
     color = ('w', 'gray', 'k')
     index = np.arange(dim)
-    plt.bar(index, d1, width=dimw, color=color[0], label='GenCliqJoin', edgecolor='k', hatch='///')
+    plt.bar(index, d1, width=dimw, color=color[0], label='CliqueJoin++', edgecolor='k', hatch='///')
     plt.bar(index + dimw, d2, width=dimw, color=color[0], label='CliqueJoin', edgecolor='k', hatch='xxx')
     plt.xticks(index + dimw / 2, xticks)
     plt.xticks(fontsize=13)
     plt.yticks(fontsize=13)
-    plt.ylabel('Query Time $LogT$ (s)', fontsize=15)
+    plt.yscale('log')
+    plt.ylabel('Query Time (s)', fontsize=15)
     plt.legend(fontsize=12)
 
     for a, b in zip(index, d1):
@@ -45,7 +46,7 @@ def draw_exp1():
 def draw_exp2():
     # two pictures in one row, now draw the first picture
     plt.subplot(121)
-    # gencliq
+    # CliqueJoin++
     d1 = (57, 123, 759)
     # cliq
     d2 = (107, 287, 854)
@@ -59,7 +60,7 @@ def draw_exp2():
     # 对两个列进行画图
     color = ('w', 'gray', 'k')
     index = np.arange(dim)
-    plt.bar(index, d1, width=dimw, color=color[0], label='GenCliqJoin', edgecolor='k', hatch='///')
+    plt.bar(index, d1, width=dimw, color=color[0], label='CliqueJoin++', edgecolor='k', hatch='///')
     plt.bar(index + dimw, d2, width=dimw, color=color[0], label='CliqueJoin', edgecolor='k', hatch='xxx')
     plt.xticks(index + dimw / 2, xticks)
     plt.xticks(fontsize=13)
@@ -78,7 +79,7 @@ def draw_exp2():
 
     # two pictures in one row, now draw the second picture
     plt.subplot(122)
-    # gencliq
+    # CliqueJoin++
     d1 = (57, 123, 759)
     # cliq
     d2 = (107, 287, 854)
@@ -92,7 +93,7 @@ def draw_exp2():
     # 对两个列进行画图
     color = ('w', 'gray', 'k')
     index = np.arange(dim)
-    plt.bar(index, d1, width=dimw, color=color[0], label='GenCliqJoin', edgecolor='k', hatch='///')
+    plt.bar(index, d1, width=dimw, color=color[0], label='CliqueJoin++', edgecolor='k', hatch='///')
     plt.bar(index + dimw, d2, width=dimw, color=color[0], label='CliqueJoin', edgecolor='k', hatch='xxx')
     plt.xticks(index + dimw / 2, xticks)
     plt.xticks(fontsize=11)
@@ -113,7 +114,7 @@ def draw_exp2():
 
 
 def draw_exp2_q2():
-    # gencliq
+    # CliqueJoin++
     d1 = (57, 123, 759)
     # cliq
     d2 = (107, 287, 854)
@@ -127,7 +128,7 @@ def draw_exp2_q2():
     # 对两个列进行画图
     color = ('w', 'gray', 'k')
     index = np.arange(dim)
-    plt.bar(index, d1, width=dimw, color=color[0], label='GenCliqJoin', edgecolor='k', hatch='///')
+    plt.bar(index, d1, width=dimw, color=color[0], label='CliqueJoin++', edgecolor='k', hatch='///')
     plt.bar(index + dimw, d2, width=dimw, color=color[0], label='CliqueJoin', edgecolor='k', hatch='xxx')
     plt.xticks(index + dimw / 2, xticks)
     plt.xticks(fontsize=13)
@@ -148,7 +149,7 @@ def draw_exp2_q2():
 
 
 def draw_exp2_q5():
-    # gencliq
+    # CliqueJoin++
     d1 = (99, 43.6, 1253)
     # cliq
     d2 = (1206, 136, 5908)
@@ -162,7 +163,7 @@ def draw_exp2_q5():
     # 对两个列进行画图
     color = ('w', 'gray', 'k')
     index = np.arange(dim)
-    plt.bar(index, d1, width=dimw, color=color[0], label='GenCliqJoin', edgecolor='k', hatch='///')
+    plt.bar(index, d1, width=dimw, color=color[0], label='CliqueJoin++', edgecolor='k', hatch='///')
     plt.bar(index + dimw, d2, width=dimw, color=color[0], label='CliqueJoin', edgecolor='k', hatch='xxx')
     plt.xticks(index + dimw / 2, xticks)
     plt.xticks(fontsize=13)
@@ -183,7 +184,7 @@ def draw_exp2_q5():
 
 
 def draw_exp3():
-    # gencliq
+    # CliqueJoin++
     d1 = (91, 68, 57)
 
     # cliq
@@ -198,7 +199,7 @@ def draw_exp3():
     # 对两个列进行画图
     color = ('w', 'gray', 'k')
     index = np.arange(dim)
-    plt.bar(index, d1, width=dimw, color=color[0], label='GenCliqJoin', edgecolor='k', hatch='///')
+    plt.bar(index, d1, width=dimw, color=color[0], label='CliqueJoin++', edgecolor='k', hatch='///')
     plt.bar(index + dimw, d2, width=dimw, color=color[0], label='CliqueJoin', edgecolor='k', hatch='xxx')
     plt.xticks(index + dimw / 2, xticks)
     plt.xticks(fontsize=13)
@@ -229,15 +230,15 @@ def to_log(arr):
 
 def draw_exp4():
     # DG01
-    d1 = to_log((14, 1, 1, 2, 2, 3))
+    d1 = (14, 1, 1, 2, 2, 3)
     # DG03
-    d2 = to_log((55, 1, 2, 4, 4, 6))
+    d2 = (55, 1, 2, 4, 4, 6)
     # DG10
-    d3 = to_log((170, 4, 7, 16, 15, 17))
+    d3 = (170, 4, 7, 16, 15, 17)
     # DG30
-    d4 = to_log((1973, 11, 22, 55, 61, 48))
+    d4 = (1973, 11, 22, 55, 61, 48)
     # DG60
-    d5 = to_log((6282, 22, 44, 114, 207, 95))
+    d5 = (6282, 22, 44, 114, 207, 95)
     xticks = ('$q_1$', '$q_2$', '$q_3$', '$q_4$', '$q_5$', '$q_6$')
 
     dim = len(d1)
@@ -257,23 +258,24 @@ def draw_exp4():
     plt.xticks(index + 2 * dimw, xticks)
     plt.xticks(fontsize=13)
     plt.yticks(fontsize=13)
-    plt.ylabel('Query Time $logT$ (s)', fontsize=15)
+    plt.ylabel('Query Time (s)', fontsize=15)
+    plt.yscale('log')
     plt.legend(fontsize=12)
 
     for a, b in zip(index, d1):
-        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom', fontsize=11)
+        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom', fontsize=8)
 
     for a, b in zip(index + dimw, d2):
-        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom', fontsize=11)
+        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom', fontsize=8)
 
     for a, b in zip(index + 2 * dimw, d3):
-        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom', fontsize=11)
+        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom', fontsize=8)
 
     for a, b in zip(index + 3 * dimw, d4):
-        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom', fontsize=11)
+        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom', fontsize=8)
 
     for a, b in zip(index + 4 * dimw, d5):
-        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom', fontsize=11)
+        plt.text(a, b + 0.05, '%.0f' % b, ha='center', va='bottom', fontsize=8)
 
     # plt.tight_layout()
     plt.savefig('exp4.pdf', format='pdf')
