@@ -30,7 +30,7 @@ In addition, $\Pr_{G} (\iota)$ can be calculated using the maximum likelihood es
 
 \subsection{Migration from MapReduce to Dataflow} \label{to-df}
 
-\stitle{Implementation Details.}  The SCP storage mechanism and optimal join plan generation for unlabelled querie are strictly implemented according to \cite{Lai2016}. For labelled queries, we firstly scan the data graph to acquire label frequencies and apply the optimized cost model we propose in Section \ref{sec:opt} afterward. Here, given a join plan $J$, we will show the details of how to implement \gencliqjoin on \timely dataflow next. 
+\stitle{Implementation Details.}  The SCP storage mechanism and optimal join plan generation for unlabelled querie are strictly implemented according to \cite{Lai2016}. For labelled queries, we firstly scan the data graph to acquire label frequencies and apply the optimized cost model we proposed in Section \ref{sec:opt} afterward to compute an optimal join plan for each query. Here, given a join plan $J$, we will show the details of how to implement \gencliqjoin on \timely dataflow next. 
 
 \sstitle{(1) Building \timely Dataflow.} The procedure of building the dataflow is shown in Algorithm \ref{alg:build_dataflow}. This algorithm is to compute the join operations round by round to get the final matches $R(q)$ in a stream.\\
 

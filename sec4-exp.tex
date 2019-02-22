@@ -1,9 +1,9 @@
 \section{Experiments}
 \label{sec:exp}
-We conduct extensive experiments for \gencliqjoin on both unlabelled and labelled data graphs. In this section, we present the experimental results over the optimizations we have done to \cliquejoin. Note that we focus only on undirected graph as the original \cliquejoin, but our implementation can also support directed queries.
+We have conducted extensive experiments for \gencliqjoin on both unlabelled and labelled data graphs. In this section, we present the experimental results over the optimizations we have done to \cliquejoin. Note that we focus only on undirected graph as the original \cliquejoin, but our implementation can also support directed queries.
 
 \subsection{Experimental Settings}
-\stitle{Environments.} We use a cluster of 10 nodes connected via a 10Gpbs switch, and each node has 64GB memory, 1TB disk and 1 Intel Xeon CPU E3-1220 V6 3.00GHz with 4 physical cores. We implement \cliquejoin in \timely dataflow system \footnote{\url{https://github.com/frankmcsherry/timely-dataflow}} using Rust 1.27. We use 10 machines and each machine uses 3 workers by default.
+\stitle{Environments.} We use a cluster of 10 nodes connected via a 10Gpbs switch, and each node has 64GB memory, 1TB disk and 1 Intel Xeon CPU E3-1220 V6 3.00GHz with 4 physical cores. We implement \cliquejoin in \timely dataflow system \footnote{\url{https://github.com/TimelyDataflow/timely-dataflow}} using Rust 1.27. We use 10 machines and each machine uses 3 workers by default.
 
 \stitle{Metrics.} We measure query time $T$ from the average time of three runs. The query time is actually the slowest worker's running time during each run, which excludes graph loading time as it is negligible compared to query time. We set batch size to $10,000$ and threshold to $10,000,000$ by default in $\code{BatchJoin}$.
 
@@ -58,7 +58,7 @@ uk2002 & UK & 18.5 & 298.11 & 16.1 & 194,955\\
 \end{figure}
 
 
-\stitle{Exp3 - Scalability.} We compare the scalability of \gencliqjoin with \cliquejoin on LJ using $q_2$ by varying number of nodes(6, 8, 10) used in the cluster, whose results are shown in \reffig{unl_sca}. We can see that \gencliqjoin is in general 2 times faster than \cliquejoin.
+\stitle{Exp3 - Scalability.} We compare the scalability of \gencliqjoin with \cliquejoin on LJ using $q_2$ by varying number of nodes (6, 8, 10) used in the cluster, whose results are shown in \reffig{unl_sca}. We can see that \gencliqjoin is in general 2 times faster than \cliquejoin.
 
 \begin{figure}[htb]
   \centering
@@ -103,7 +103,7 @@ Due to the lack of big public labelled graphs, we adopt LDBC social network benc
   \label{fig:lq}
 \end{figure}
 
-\stitle{Exp4 - All Labelled Queries.} We perform \gencliqjoin for all queries on all datasets, and the results are illustrated in \reffig{all_lq}. We can see that \gencliqjoin can finish subgraph matching in tens of seconds for $q_2, q_3, q_4, q_5, q_6$ in all data graphs, even if DG60 is a billion scale graph. We notice that the query time for $q_1$ increases sharply when the dataset becomes larger. The reason is that the algorithm spends a lot of time computing the stars' matches in $q_1$($q_1$ is decomposed into two $2\text{-}star$s) due to the poor filter information of $q_1$'s join units in data graph.
+\stitle{Exp4 - All Labelled Queries.} We perform \gencliqjoin for all queries on all datasets, and the results are illustrated in \reffig{all_lq}. We can see that \gencliqjoin can finish subgraph matching in tens of seconds for $q_2, q_3, q_4, q_5, q_6$ in all data graphs, even if DG60 is a billion scale graph. We notice that the query time for $q_1$ increases sharply when the dataset becomes larger. The reason is that the algorithm spends a lot of time computing the stars' matches in $q_1$ ($q_1$ is decomposed into two $2\text{-}star$s) due to the poor filter information of $q_1$'s join units in data graph.
 
 \begin{figure}[htb]
   \centering
@@ -112,7 +112,7 @@ Due to the lack of big public labelled graphs, we adopt LDBC social network benc
   \label{fig:all_lq}
 \end{figure}
 
-\stitle{Exp5 - Labelled Scalability.} We evaluate the labelled matching scalability of $q_1$ and $q_4$ on DG10 by varying the number of nodes used in the cluster (6, 8, 10), and the results are demonstrated in \reffig{l_sca}. We can see that when decreasing the number of machines used in the cluster, the query time slightly increases, which shows that \gencliqjoin has great scalability for labelled matching.
+\stitle{Exp5 - Labelled Scalability.} We evaluate the labelled matching scalability of $q_1$ and $q_4$ on DG10 by varying the number of nodes used in the cluster (6, 8, 10), and the results are demonstrated in \reffig{l_sca}. We can see that when decreasing the number of machines used in the cluster, the query time increases almost linearly, which shows that \gencliqjoin has great scalability for labelled matching.
 
 \begin{figure}[htb]
   \centering
